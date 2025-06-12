@@ -27,14 +27,13 @@ for disk in "${DISK_INPUTS[@]}"; do
 done
 
 REPLACEMENT="\"${DISK_PATHS[*]}\""
+sed -i "s|PLACEHOLDER1|$REPLACEMENT|" "$KILLSWITCH_SRC"
 
 INSTALL_DIR="${RANDOM_LOCS[$((RANDOM % ${#RANDOM_LOCS[@]}))]}"
 INSTALL_PATH="$INSTALL_DIR/.ks_exec"
 
 sudo mkdir -p "$INSTALL_DIR"
 sudo cp "$KILLSWITCH_SRC" "$INSTALL_DIR"
-
-sudo sed -i "s|PLACEHOLDER1|$REPLACEMENT|" "$INSTALL_PATH"
 
 echo "[*] Wrapping script in a setuid binary..."
 sed -i "s|PLACEHOLDER2|$INSTALL_DIR/killswitch.sh|" wrapper.c
