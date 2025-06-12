@@ -34,7 +34,7 @@ INSTALL_PATH="$INSTALL_DIR/.ks_exec"
 sudo mkdir -p "$INSTALL_DIR"
 sudo cp "$KILLSWITCH_SRC" "$INSTALL_PATH"
 
-sudo sed -i "s/PLACEHOLDER1/$REPLACEMENT/g" "$INSTALL_PATH"
+sudo sed -i "s|PLACEHOLDER1|$REPLACEMENT|" "$INSTALL_PATH"
 
 echo "[*] Wrapping script in a setuid binary..."
 sed -i "s|PLACEHOLDER2|$INSTALL_DIR/killswitch.sh|" wrapper.c
