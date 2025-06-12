@@ -28,35 +28,21 @@ done
 
 REPLACEMENT="\"${DISK_PATHS[*]}\""
 
-INSTALL_DIR="${RANDOM_LOCATIONS[$((RANDOM % ${#RANDOM_LOCATIONS[@]}))]}"
+INSTALL_DIR="${RANDOM_LOCS[$((RANDOM % ${#RANDOM_LOCS[@]}))]}"
 INSTALL_PATH="$INSTALL_DIR/.ks_exec"
 
-mkdir -p "$INSTALL_DIR"
-cp "$KILLSWITCH_SRC" "$INSTALL_PATH"
+sudo mkdir -p "$INSTALL_DIR"
+sudo cp "$KILLSWITCH_SRC" "$INSTALL_PATH"
 
-sed -i "s/PLACEHOLDER1/$REPLACEMENT/g" "$INSTALL_PATH"
+sudo sed -i "s/PLACEHOLDER1/$REPLACEMENT/g" "$INSTALL_PATH"
 
-chmod 755 "$INSTALL_PATH"
-chown root:root "$INSTALL_PATH"
-if chmod u+s "$INSTALL_PATH" 2>/dev/null; then
-    echo "[+] SUID set on $INSTALL_PATH (kinda rare for scripts, you got lucky!)."
-else
-    echo "[!] Could not set SUID on $INSTALL_PATH, wrapping in C binary and trying again..."
-    cat > "$INSTALL_DIR/.wrapper.c" <<EOF
-#include <stdlib.h>
-#include <unistd.h>
-int main() {
-    setuid(0);
-    execl("$INSTALL_PATH", "killswitch", NULL);
-    return 1;
-}
-EOF
-    rm -f "$INSTALL_PATH"
-    gcc "$INSTALL_DIR/.wrapper.c" -o "$INSTALL_PATH"
-    chown root:root "$INSTALL_PATH"
-    chmod 4755 "$INSTALL_PATH"
-    rm "$INSTALL_DIR/.wrapper.c"
-    echo "[+] Wrapper compiled and setuid enabled."
-fi
+echo "[*] Wrapping script in a setuid binary..."
+sed -i "s|PLACEHOLDER2|$INSTALL_DIR/killswitch.sh|" wrapper.c
+sudo mv wrapper.c "$INSTALL_DIR/.wrapper.c"
+sudo gcc "$INSTALL_DIR/.wrapper.c" -o "$INSTALL_PATH"
+sudo chown root:root "$INSTALL_PATH"
+sudo chmod 4755 "$INSTALL_PATH"
+sudo rm "$INSTALL_DIR/.wrapper.c"
+echo "[+] Wrapper compiled and setuid enabled."
 
 echo "[+] Kill switch installed to: $INSTALL_PATH"

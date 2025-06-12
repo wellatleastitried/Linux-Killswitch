@@ -11,7 +11,7 @@ fi
 
 set -euo pipefail
 
-DISKS=("PLACEHOLDER1")
+DISKS=(PLACEHOLDER1)
 SHRED_DIRS=("/home" "/tmp" "/var/tmp" "/root")
 FILL_MOUNTS=("/" "/home")
 
