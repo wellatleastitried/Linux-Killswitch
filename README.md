@@ -22,4 +22,7 @@ git clone "https://github.com/wellatleastitried/Linux-Killswitch.git"
 cd Linux-Killswitch
 ./install.sh
 ```
-Now bind `killswitch.sh` to a keybind that WILL NOT BE ACCIDENTALLY PRESSED.
+Now copy the path displayed at the end of the install and set a keybind that WILL NOT BE ACCIDENTALLY PRESSED.
+
+## Notice
+I am not liable for any damage done to your computer. Use this script at your own risk and don't be stupid
