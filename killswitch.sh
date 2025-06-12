@@ -49,7 +49,7 @@ shred_swaps() {
 zero_fill_mount() {
     mnt="$1"
     log "[*] Zero-filling free space on $mnt ..."
-    dd if=/dev/zero of="$mnt/zero.fill" bs=1M status=none || true
+    dd if=/dev/zero of="$mnt/zero.fill" bs=1M status=none 2>/dev/null || true
     rm -f "$mnt/zero.fill"
 }
 
@@ -70,6 +70,14 @@ nuke_raw_block_devices() {
     log "[+] Device-level destruction done."
 }
 
+wipe_signatures() {
+    log "[*] Wiping filesystem signatures..."
+    for disk in "${DISKS[@]}"; do
+        wipefs -a "$disk" || log "[!] wipefs failed on $disk"
+    done
+    log "[+] Filesystem signatures wiped."
+}
+
 wipe_bootloader() {
     log "[*] Wiping bootloader sectors..."
     for disk in "${DISKS[@]}"; do
@@ -80,8 +88,8 @@ wipe_bootloader() {
 
 drop_flush_memory() {
     log "[*] Dropping caches and flushing memory..."
-    sync
-    echo 3 > /proc/sys/vm/drop_caches
+    command -v sync >/dev/null || log "[!] sync failed or missing"
+    echo 3 > /proc/sys/vm/drop_caches || log "[!] Failed to drop caches"
 }
 
 grand_finale() {
@@ -93,13 +101,11 @@ grand_finale() {
 
 log "[*] Starting kill switch at $(date)"
 disable_network_interfaces
+drop_flush_memory
 shred_all_dirs
 shred_swaps
 fill_all_mounts
 nuke_raw_block_devices
+wipe_signatures
 wipe_bootloader
-
-# Uncomment the line below to exfiltrate log before shutdown (if testing)
-# cp "$LOG" /mnt/shared/killswitch.log
-drop_flush_memory
 grand_finale

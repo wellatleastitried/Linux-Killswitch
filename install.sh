@@ -15,7 +15,6 @@ echo "[*] Scanning for block devices..."
 lsblk -dno NAME,SIZE,TYPE | grep disk
 echo
 read -rp "[?] Enter disk(s) to wipe (space-separated, e.g., sda sdb): " -a DISK_INPUTS
-
 DISK_PATHS=()
 for disk in "${DISK_INPUTS[@]}"; do
     if [[ -b "/dev/$disk" ]]; then
