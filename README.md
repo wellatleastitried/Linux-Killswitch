@@ -11,6 +11,10 @@ This script is built to render the filesystem unusable and unrecoverable. The ke
 - Executes entirely from memory to avoid leaving traces on disk
 - Force-powers off the machine via `/proc/sysrq-trigger`
 
+## Dependencies
+- `gcc` (Only required during install)
+
+
 ## Installation
 ```bash
 git clone "https://github.com/wellatleastitried/Linux-Killswitch.git"
