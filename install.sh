@@ -36,12 +36,10 @@ sudo cp "$KILLSWITCH_SRC" "$INSTALL_DIR/.killswitch"
 
 echo "[*] Wrapping script in a setuid binary..."
 sed -i "s|PLACEHOLDER2|$INSTALL_DIR/.killswitch|" wrapper.c
-sudo mv wrapper.c "$INSTALL_DIR/.wrapper.c"
-sudo gcc "$INSTALL_DIR/.wrapper.c" -o "$INSTALL_PATH"
+sudo gcc wrapper.c -o "$INSTALL_PATH"
 sudo chown root:root "$INSTALL_PATH"
 sudo chmod 4755 "$INSTALL_PATH"
 sudo chmod +x "$INSTALL_DIR/.killswitch"
-sudo rm "$INSTALL_DIR/.wrapper.c"
 echo "[+] Wrapper compiled and setuid enabled."
 
 echo "[+] Kill switch installed to: $INSTALL_PATH"
