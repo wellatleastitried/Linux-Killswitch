@@ -22,17 +22,6 @@ disable_network_interfaces() {
     done
 }
 
-corrupt_framebuffer() {
-    if [ -e /dev/fb0 ]; then
-        (
-            while true; do
-                dd if=/dev/urandom of=/dev/fb0 bs=64k seek=$((RANDOM % 100)) status=none 2>/dev/null || true
-                sleep 0.5
-            done
-        ) &
-    fi
-}
-
 shred_dir() {
     dir="$1"
     log "[*] Shredding contents of $dir ..."
