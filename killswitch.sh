@@ -101,7 +101,6 @@ grand_finale() {
 
 log "[*] Starting kill switch at $(date)"
 disable_network_interfaces
-corrupt_framebuffer
 drop_flush_memory
 shred_all_dirs
 shred_swaps
