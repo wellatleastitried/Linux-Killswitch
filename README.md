@@ -1,6 +1,6 @@
 # Linux-Killswitch
 
-This script is built to render the filesystem unusable and unrecoverable. The key steps used to do this are as follow:
+This script is built to render the filesystem unusable and unrecoverable. The steps used to do this are as follow:
 - Disable network interfaces
 - Shred files on mounted filesystem
 - Disables and overwrites swap partitions
